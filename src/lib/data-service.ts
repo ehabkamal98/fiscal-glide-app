@@ -228,7 +228,7 @@ export const updateCurrencyRate = (code: string, rate: number): Currency | undef
   
   const updatedCurrency = { ...currencies[index], rate };
   currencies[index] = updatedCurrency;
-  localStorage.setItem("currencies", JSON.stringify(updatedCurrencies));
+  localStorage.setItem("currencies", JSON.stringify(currencies));
   
   return updatedCurrency;
 };
