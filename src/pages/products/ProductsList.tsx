@@ -39,8 +39,7 @@ import { toast } from "sonner";
 const ProductsList = () => {
   const [products, setProducts] = useState(getProducts());
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   
   const categories = getCategories();
   
@@ -72,6 +71,8 @@ const ProductsList = () => {
     setDeleteId(null);
   };
   
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -102,12 +103,15 @@ const ProductsList = () => {
         </div>
         
         <div className="w-full md:w-[180px]">
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <Select 
+            value={categoryFilter || "all"} 
+            onValueChange={(value) => setCategoryFilter(value === "all" ? null : value)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="All categories" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All categories</SelectItem>
+              <SelectItem value="all">All categories</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name}

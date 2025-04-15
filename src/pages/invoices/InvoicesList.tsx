@@ -46,7 +46,7 @@ import { toast } from "sonner";
 const InvoicesList = () => {
   const [invoices, setInvoices] = useState(getInvoices());
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<InvoiceStatus | "">("");
+  const [statusFilter, setStatusFilter] = useState<InvoiceStatus | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   
   const filteredInvoices = invoices.filter(invoice => {
@@ -107,14 +107,14 @@ const InvoicesList = () => {
         
         <div className="w-full md:w-[180px]">
           <Select 
-            value={statusFilter} 
-            onValueChange={(value) => setStatusFilter(value as InvoiceStatus | "")}
+            value={statusFilter || "all"} 
+            onValueChange={(value) => setStatusFilter(value === "all" ? null : value as InvoiceStatus)}
           >
             <SelectTrigger>
               <SelectValue placeholder="All statuses" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All statuses</SelectItem>
+              <SelectItem value="all">All statuses</SelectItem>
               <SelectItem value="pending">Pending</SelectItem>
               <SelectItem value="review">Review</SelectItem>
               <SelectItem value="approved">Approved</SelectItem>

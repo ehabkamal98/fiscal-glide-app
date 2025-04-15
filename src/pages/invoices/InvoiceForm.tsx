@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
@@ -11,7 +10,7 @@ import {
   calculateInvoiceItemTotal,
   calculateInvoiceTotals
 } from "@/lib/data-service";
-import { InvoiceItem, Currency } from "@/types";
+import { InvoiceItem, Currency, InvoiceStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,6 +49,7 @@ const InvoiceForm = () => {
     tipAmount: 0,
     notes: "",
     currency: allCurrencies[0],
+    status: "pending" as InvoiceStatus,
   });
   
   const [totals, setTotals] = useState({
@@ -71,6 +71,7 @@ const InvoiceForm = () => {
           tipAmount: invoice.tipAmount,
           notes: invoice.notes,
           currency: invoice.currency,
+          status: invoice.status,
         });
       } else {
         toast.error("Invoice not found");
