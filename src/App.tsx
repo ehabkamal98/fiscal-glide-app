@@ -14,6 +14,7 @@ import InvoicesList from "./pages/invoices/InvoicesList";
 import InvoiceForm from "./pages/invoices/InvoiceForm";
 import InvoiceDetail from "./pages/invoices/InvoiceDetail";
 import InvoicePrint from "./pages/invoices/InvoicePrint";
+import CurrenciesManagement from "./pages/currencies/CurrenciesManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,9 @@ const App = () => (
             <Route path="invoices/edit/:id" element={<InvoiceForm />} />
             <Route path="invoices/:id" element={<InvoiceDetail />} />
             <Route path="invoices/print/:id" element={<InvoicePrint />} />
+            
+            {/* Currency Management */}
+            <Route path="currencies" element={<CurrenciesManagement />} />
           </Route>
           
           {/* Catch-all route */}

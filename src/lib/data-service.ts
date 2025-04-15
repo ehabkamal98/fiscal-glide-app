@@ -202,6 +202,24 @@ export const getCurrencies = (): Currency[] => {
   return JSON.parse(localStorage.getItem("currencies") || "[]");
 };
 
+export const getCurrency = (code: string): Currency | undefined => {
+  const currencies = getCurrencies();
+  return currencies.find((currency) => currency.code === code);
+};
+
+export const createCurrency = (currency: Omit<Currency, "rate">): Currency => {
+  const newCurrency: Currency = {
+    ...currency,
+    rate: 1, // Default rate for new currencies
+  };
+  
+  const currencies = getCurrencies();
+  const updatedCurrencies = [...currencies, newCurrency];
+  localStorage.setItem("currencies", JSON.stringify(updatedCurrencies));
+  
+  return newCurrency;
+};
+
 export const updateCurrencyRate = (code: string, rate: number): Currency | undefined => {
   const currencies = getCurrencies();
   const index = currencies.findIndex((currency) => currency.code === code);
@@ -210,9 +228,31 @@ export const updateCurrencyRate = (code: string, rate: number): Currency | undef
   
   const updatedCurrency = { ...currencies[index], rate };
   currencies[index] = updatedCurrency;
-  localStorage.setItem("currencies", JSON.stringify(currencies));
+  localStorage.setItem("currencies", JSON.stringify(updatedCurrencies));
   
   return updatedCurrency;
+};
+
+export const deleteCurrency = (code: string): boolean => {
+  const currencies = getCurrencies();
+  
+  // Check if any invoices use this currency
+  const invoices = getInvoices();
+  const hasInvoices = invoices.some((invoice) => invoice.currency.code === code);
+  
+  if (hasInvoices) {
+    return false;
+  }
+  
+  const filteredCurrencies = currencies.filter((currency) => currency.code !== code);
+  
+  // Don't allow deleting if it's the last currency
+  if (filteredCurrencies.length === 0) {
+    return false;
+  }
+  
+  localStorage.setItem("currencies", JSON.stringify(filteredCurrencies));
+  return true;
 };
 
 // Invoice calculations
@@ -238,4 +278,12 @@ export const calculateInvoiceTotals = (items: InvoiceItem[], taxRate: number, ti
   const total = calculateInvoiceTotal(subtotal, taxAmount, tipAmount);
   
   return { subtotal, taxAmount, total };
+};
+
+// Convert amount between currencies
+export const convertCurrencyAmount = (amount: number, fromCurrency: Currency, toCurrency: Currency): number => {
+  // Convert from source currency to base rate (USD assumed to be 1.0)
+  const amountInBase = amount / fromCurrency.rate;
+  // Convert from base rate to target currency
+  return amountInBase * toCurrency.rate;
 };
