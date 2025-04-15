@@ -1,4 +1,3 @@
-
 import { Category, Product, Invoice, Currency, InvoiceStatus } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -67,9 +66,8 @@ export const products: Product[] = [
 // Mock Currencies
 export const currencies: Currency[] = [
   { code: "USD", name: "US Dollar", symbol: "$", rate: 1 },
-  { code: "EUR", name: "Euro", symbol: "€", rate: 0.92 },
-  { code: "GBP", name: "British Pound", symbol: "£", rate: 0.78 },
-  { code: "JPY", name: "Japanese Yen", symbol: "¥", rate: 150.2 },
+  { code: "EGP", name: "Egyptian Pound", symbol: "£", rate: 31.05 },
+  { code: "SAR", name: "Saudi Riyal", symbol: "﷼", rate: 3.75 },
 ];
 
 // Generate a unique invoice number
